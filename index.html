@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f0e4">
+  <meta name="description" content="我是大老板在线多人桌游">
+  <title>我是大老板 · BOSS CLUB</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true">
+    <defs>
+      <symbol id="icon-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c5 3 13 3 18 0M10 12v3h4v-3"/></symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-2H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-2h3z"/></symbol>
+      <symbol id="icon-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></symbol>
+      <symbol id="icon-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8" cy="8" r="1"/><circle cx="16" cy="8" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></symbol>
+      <symbol id="icon-cards" viewBox="0 0 24 24"><rect x="7" y="3" width="12" height="17" rx="2"/><path d="M7 7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8M11 8h4M11 12h4"/></symbol>
+      <symbol id="icon-handshake" viewBox="0 0 24 24"><path d="m8 12 3-3a2 2 0 0 1 3 0l2 2a2 2 0 0 1 0 3l-2 2a2 2 0 0 1-3 0l-1-1M2 9l4-4 4 2 3-1 3 3 4-1 2 3-5 7-4-2-3 2-4-5z"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M20 15a3 3 0 0 1-3 3H9l-5 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z"/></symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v.1"/></symbol>
+      <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></symbol>
+      <symbol id="icon-exit" viewBox="0 0 24 24"><path d="M10 4H4v16h6M14 8l4 4-4 4M8 12h10"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="我是大老板首页">
+        <span class="brand-mark"><svg><use href="#icon-briefcase"/></svg></span>
+        <span class="brand-copy"><strong>我是大老板</strong><small>BOSS CLUB</small></span>
+      </a>
+      <div class="room-meta">
+        <span class="live-dot" id="connectionDot" aria-hidden="true"></span>
+        <span id="roomName">在线联机</span>
+        <span class="room-code" id="roomCode">#------</span>
+        <span class="mock-badge" id="connectionStatus">未连接</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" id="rulesButton" type="button" aria-label="查看规则" title="查看规则"><svg><use href="#icon-book"/></svg></button>
+        <button class="icon-button" id="leaveButton" type="button" aria-label="离开房间" title="离开房间" hidden><svg><use href="#icon-exit"/></svg></button>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="table-area" aria-label="游戏牌桌">
+        <div class="table-heading">
+          <div><span class="eyebrow">THE DEAL TABLE</span><h1>今天，谁来做大老板？</h1></div>
+          <div class="round-counter"><span id="dealCounter">01</span><small>/ 15 笔交易</small></div>
+        </div>
+
+        <div class="table-surface">
+          <div class="player-seats" id="playerSeats"></div>
+          <div class="board" id="board">
+            <div class="board-orbit orbit-one" aria-hidden="true"></div>
+            <div class="board-orbit orbit-two" aria-hidden="true"></div>
+            <span class="board-stamp">投资有风险<br>谈判需谨慎</span>
+            <div class="marker" id="marker" aria-label="美元标记"><span>$</span></div>
+            <div class="deal-card" id="dealCard">
+              <div class="deal-card-top"><span id="dealNumber">DEAL 01</span><span class="sector-pill" id="dealSector">城市发展</span></div>
+              <div class="deal-illustration" aria-hidden="true"><span class="building b1"></span><span class="building b2"></span><span class="building b3"></span><span class="sun"></span></div>
+              <div class="deal-title"><small id="dealEnglish">CLOUD CITY</small><h2 id="dealTitle">云端新城计划</h2></div>
+              <div class="required-investors" id="requiredInvestors"></div>
+              <div class="deal-value"><span><small>每份收益</small><strong id="sharePrice">$2M</strong></span><i>×</i><span><small>股数</small><strong id="shareCount">3</strong></span><i>=</i><span class="total"><small>交易总额</small><strong id="dealTotal">$6M</strong></span></div>
+            </div>
+            <div class="effect-stack" id="effectStack" aria-live="polite"></div>
+            <div class="board-waiting" id="boardWaiting"><svg><use href="#icon-briefcase"/></svg><strong>牌桌正在准备</strong><span>创建或加入房间后，等待所有玩家准备。</span></div>
+          </div>
+
+          <div class="deal-rail-wrap">
+            <div class="deal-rail" id="dealRail" aria-label="交易进度"></div>
+            <div class="turn-actions">
+              <button class="button button-secondary" id="rollButton" type="button" disabled><svg><use href="#icon-dice"/></svg><span>掷骰移动</span></button>
+              <button class="button button-secondary" id="drawButton" type="button" disabled><svg><use href="#icon-cards"/></svg><span>抽 3 张牌</span></button>
+              <button class="button button-primary" id="negotiateButton" type="button" disabled><svg><use href="#icon-handshake"/></svg><span>发起谈判</span></button>
+            </div>
+          </div>
+        </div>
+        <p class="table-note"><svg><use href="#icon-info"/></svg><span id="tableNote">服务端权威联机 · 3–6 人 · 同一电脑多开或局域网访问</span></p>
+      </section>
+
+      <aside class="side-panel" aria-label="谈判与手牌">
+        <section class="panel negotiation-panel" id="negotiationPanel">
+          <div class="panel-heading"><div><span class="eyebrow">MAKE A DEAL</span><h2>坐下来，谈笔生意</h2></div><span class="step-badge" id="negotiationBadge">等待开局</span></div>
+          <div class="stop-window" id="stopWindow" hidden><span id="stopCountdown">叫停窗口</span><button type="button" id="quickStopButton">使用叫停卡</button></div>
+          <div class="payout-summary"><span>待分配总额</span><strong id="payoutTotal">$6M</strong></div>
+          <div class="allocation-bar" id="allocationBar" aria-hidden="true"></div>
+          <div class="allocation-list" id="allocationList"></div>
+          <div class="allocation-footer"><span id="allocationStatus">等待玩家加入</span><button class="text-button" id="splitButton" type="button" hidden>平均分配</button></div>
+          <button class="button button-primary confirm-deal" id="proposeButton" type="button" hidden><span>提出分配方案</span><svg><use href="#icon-arrow"/></svg></button>
+          <button class="button button-primary confirm-deal" id="approveButton" type="button" hidden><svg><use href="#icon-check"/></svg><span>同意当前方案</span></button>
+          <button class="button button-primary confirm-deal" id="confirmDealButton" type="button" hidden><span>宣布成交</span><svg><use href="#icon-arrow"/></svg></button>
+          <button class="button button-ghost end-turn" id="cancelButton" type="button" hidden>结束本轮谈判</button>
+          <button class="button button-ghost end-turn" id="endTurnButton" type="button" hidden>结束本回合</button>
+        </section>
+
+        <section class="panel hand-panel">
+          <div class="panel-heading compact"><div><span class="eyebrow">YOUR INFLUENCE</span><h2>你的影响力</h2></div><span class="hand-count"><b id="handCount">0</b> 张</span></div>
+          <div class="hand-cards" id="handCards"></div>
+          <p class="hand-hint" id="handHint">加入房间并开始游戏后，你会收到 5 张私密手牌。</p>
+        </section>
+
+        <section class="panel chat-panel">
+          <div class="panel-heading compact"><div><span class="eyebrow">TABLE TALK</span><h2>桌边闲聊</h2></div><svg class="muted-icon"><use href="#icon-chat"/></svg></div>
+          <div class="chat-log" id="chatLog" aria-live="polite"></div>
+          <form class="chat-form" id="chatForm"><label class="sr-only" for="chatInput">发送消息</label><input id="chatInput" maxlength="80" autocomplete="off" placeholder="说点什么，比如：给我 30%？" disabled><button type="submit" aria-label="发送" disabled><svg><use href="#icon-arrow"/></svg></button></form>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <dialog class="modal lobby-modal" id="lobbyDialog">
+    <div class="lobby-entry" id="lobbyEntry">
+      <div class="lobby-hero"><span class="brand-mark"><svg><use href="#icon-briefcase"/></svg></span><span class="eyebrow">WELCOME TO BOSS CLUB</span><h2>开一桌资本局</h2><p>3–6 位朋友，一笔交易，一场谈判。</p></div>
+      <label class="field-label" for="playerName">你的昵称</label>
+      <input class="text-field" id="playerName" maxlength="12" autocomplete="nickname" placeholder="例如：阿哲">
+      <div class="lobby-actions-grid">
+        <form id="createRoomForm"><button class="button button-primary" type="submit"><svg><use href="#icon-briefcase"/></svg>创建房间</button></form>
+        <form class="join-form" id="joinRoomForm"><input id="roomInput" maxlength="6" autocomplete="off" placeholder="6 位房间码" aria-label="房间码"><button class="button button-secondary" type="submit">加入</button></form>
+      </div>
+      <button class="button button-secondary quick-match" id="quickMatchButton" type="button"><svg><use href="#icon-handshake"/></svg>快速加入公开房间</button>
+      <section class="public-rooms" id="publicRooms" hidden><div class="public-rooms-heading"><strong>公开房间</strong><small>等待玩家加入</small></div><div id="publicRoomList"></div></section>
+      <p class="lobby-error" id="lobbyError" role="alert"></p>
+      <div class="local-tip"><svg><use href="#icon-info"/></svg><p><strong>本地联机</strong>同一电脑可用不同浏览器或无痕窗口加入；局域网设备访问服务器所在电脑的 IP:3000。</p></div>
+    </div>
+
+    <div class="room-waiting" id="roomWaiting" hidden>
+      <div class="modal-header"><div><span class="eyebrow">YOUR ROOM</span><h2>等朋友入座</h2></div><button class="icon-button" type="button" data-leave aria-label="离开房间"><svg><use href="#icon-close"/></svg></button></div>
+      <button class="room-code-card" id="copyInviteButton" type="button"><small>房间码 · 点击复制邀请链接</small><strong id="waitingRoomCode">------</strong><span><svg><use href="#icon-copy"/></svg>邀请朋友</span></button>
+      <div class="lobby-player-list" id="lobbyPlayers"></div>
+      <div class="waiting-meta"><span id="waitingCount">0 / 6 人</span><span id="poolInfo">中央投资者牌将在开局后分配</span></div>
+      <div class="waiting-actions"><button class="button button-secondary" id="readyButton" type="button">我准备好了</button><button class="button button-primary" id="startButton" type="button" disabled>开始游戏</button></div>
+      <p class="lobby-error" id="waitingError" role="alert"></p>
+    </div>
+  </dialog>
+
+  <dialog class="modal card-modal" id="cardDialog">
+    <div class="modal-header"><div><span class="eyebrow">PLAY YOUR INFLUENCE</span><h2 id="cardDialogTitle">选择目标</h2></div><button class="icon-button" type="button" data-close="cardDialog" aria-label="关闭"><svg><use href="#icon-close"/></svg></button></div>
+    <div id="cardDialogContent"></div>
+  </dialog>
+
+  <dialog class="modal discard-modal" id="discardDialog">
+    <div class="modal-header"><div><span class="eyebrow">HAND LIMIT · 12</span><h2>选择要弃掉的牌</h2></div></div>
+    <p id="discardHint">手牌超过 12 张，请选择弃牌。</p>
+    <div class="discard-cards" id="discardCards"></div>
+    <button class="button button-primary" id="confirmDiscardButton" type="button" disabled>确认弃牌</button>
+  </dialog>
+
+  <dialog class="modal rules-modal" id="rulesDialog">
+    <div class="modal-header"><div><span class="eyebrow">HOW TO PLAY</span><h2>三分钟看懂规则</h2></div><button class="icon-button" type="button" data-close="rulesDialog" aria-label="关闭规则"><svg><use href="#icon-close"/></svg></button></div>
+    <div class="rules-grid">
+      <article><span class="rule-number">01</span><h3>目标与人数</h3><p>3–6 人扮演资本家。3 人每人 2 张投资者牌；4–6 人每人 1 张，余牌置于中央。资金最多者获胜。</p></article>
+      <article><span class="rule-number">02</span><h3>轮到你时</h3><p>可留在当前交易谈判，或掷骰顺时针移动、跳过已成交格；移动后可谈判或抽 3 张牌。起手 5 张，上限 12 张。</p></article>
+      <article><span class="rule-number">03</span><h3>凑齐投资者</h3><p>交易卡注明所需投资者与股数。控制这些投资者的玩家必须同意分配方案；每份收益 × 股数就是交易总额。</p></article>
+      <article><span class="rule-number">04</span><h3>影响力牌</h3><p>98 张牌：家族 24、旅行 21、招募 33、老板 10、叫停 10。家族代理投资者；旅行令使其退场；三张招募令夺权。</p></article>
+      <article><span class="rule-number">05</span><h3>谈判与反制</h3><p>老板卡接管谈判和审批；叫停卡必须紧接旅行、招募或老板牌。当前版本用 6 秒响应窗口自动结算。</p></article>
+      <article><span class="rule-number">06</span><h3>成交与终局</h3><p>成交后该格关闭。第 10–14 笔成交后终局概率为 1/6 至 5/6，第 15 笔必定结束。失败谈判不产生收益。</p></article>
+    </div>
+    <div class="rules-source"><strong>实现边界</strong><p>98 张牌构成、玩家分配和终局概率按公开规则实现；交易卡名称与格位使用演示牌面。初始美元标记目前由服务器随机放置，正式版可改为指定玩家选择。</p><a href="https://en.doc.boardgamearena.com/Gamehelpimtheboss" target="_blank" rel="noreferrer">公开规则参考：Board Game Arena <span>↗</span></a></div>
+  </dialog>
+
+  <dialog class="modal end-modal" id="endDialog">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+    <span class="eyebrow">THAT'S A WRAP</span>
+    <h2 id="endTitle">本局结束</h2>
+    <p id="endReason">游戏结束。</p>
+    <div class="leaderboard" id="leaderboard"></div>
+    <button class="button button-primary" id="playAgainButton" type="button">再来一局</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

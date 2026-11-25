@@ -1,0 +1,8 @@
+node_modules/
+.tools/
+.qoder/
+skills-lock.json
+.wrangler/
+.env
+*.log
+.DS_Store
